@@ -34,6 +34,9 @@ public class Solution {
             min = Math.min(min, cost);
             return;
         }
+        if (cost >= min) {
+            return;
+        }
 
         int days = plans[idx];
         if (plans[idx] == 0) {
