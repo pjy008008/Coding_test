@@ -51,7 +51,6 @@ public class Solution {
 			group.x += dx[group.dir];
 			group.y += dy[group.dir];
 			if (group.x == 0 || group.y == 0 || group.x == n - 1 || group.y == n - 1) {
-				// amount/2, dir을 반대로(+2한 후 %4 연산)
 				group.amount /= 2;
 				group.dir = reverseDir(group.dir);
 
@@ -84,15 +83,13 @@ public class Solution {
 	}
 
 	private static int reverseDir(int dir) {
-		if (dir == 0) {
+		if (dir == 0)
 			return 1;
-		} else if (dir == 1) {
+		if (dir == 1)
 			return 0;
-		} else if (dir == 2) {
+		if (dir == 2)
 			return 3;
-		} else {
-			return 2;
-		}
+		return 2;
 	}
 
 	private static int getResult() {
