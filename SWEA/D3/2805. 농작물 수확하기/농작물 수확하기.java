@@ -13,17 +13,11 @@ public class Solution {
 			int n = Integer.parseInt(br.readLine());
 			int sum = 0;
 			int mid = n / 2;
-			int[][] map = new int[n][n];
 			for (int j = 0; j < n; j++) {
 				String line = br.readLine();
-				for (int k = 0; k < n; k++) {
-					map[j][k] = line.charAt(k) - '0';
-				}
-			}
-			for (int j = 0; j < n; j++) {
 				int center = Math.abs(mid - j);
 				for (int k = center; k < n - center; k++) {
-					sum += map[j][k];
+					sum += line.charAt(k) - '0';
 				}
 			}
 			sb.append("#").append(i).append(" ").append(sum).append("\n");
