@@ -35,24 +35,22 @@ public class Main {
         }
         Arrays.sort(arr);
         perm(0, 0);
-        for (int[] result : set) {
-            for (int x : result) {
-                sb.append(x).append(" ");
-            }
-            sb.append("\n");
-        }
         System.out.println(sb);
     }
 
     private static void perm(int cnt, int flag) {
         if (cnt == m) {
-            set.add(numbers.clone());
+            for (int x : numbers) sb.append(x).append(" ");
+            sb.append("\n");
             return;
         }
+
+        int lastUsed = -1;
         for (int i = 0; i < n; i++) {
-            if ((flag & 1 << i) != 0) {
-                continue;
-            }
+            if ((flag & 1 << i) != 0) continue;
+            if (lastUsed == arr[i]) continue;
+
+            lastUsed = arr[i];
             numbers[cnt] = arr[i];
             perm(cnt + 1, flag | 1 << i);
         }
