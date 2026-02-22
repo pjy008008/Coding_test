@@ -1,10 +1,10 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
-    private static int[] arr;
+    private static int[] parent;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -12,9 +12,9 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         int n = Integer.parseInt(st.nextToken());
         int m = Integer.parseInt(st.nextToken());
-        arr = new int[n + 1];
-        for (int i = 1; i <= n; i++) {
-            arr[i] = i;
+        parent = new int[n + 1];
+        for (int i = 0; i <= n; i++) {
+            parent[i] = i;
         }
         for (int i = 0; i < m; i++) {
             st = new StringTokenizer(br.readLine());
@@ -23,11 +23,12 @@ public class Main {
             int b = Integer.parseInt(st.nextToken());
             if (cmd == 0) {
                 union(a, b);
-            }else{
+            }
+            if (cmd == 1) {
                 if (isSame(a, b)) {
-                    sb.append("YES").append("\n");
-                }else{
-                    sb.append("NO").append("\n");
+                    sb.append("YES\n");
+                } else {
+                    sb.append("NO\n");
                 }
             }
         }
@@ -35,26 +36,21 @@ public class Main {
     }
 
     private static int find(int x) {
-        if (arr[x] == x) {
+        if (parent[x] == x) {
             return x;
-        } else {
-            return arr[x] = find(arr[x]);
+        }
+        return parent[x] = find(parent[x]);
+    }
+
+    private static void union(int a, int b) {
+        a = find(a);
+        b = find(b);
+        if (a != b) {
+            parent[b] = a;
         }
     }
 
-    private static void union(int x, int y) {
-        x = find(x);
-        y = find(y);
-        if (x != y) {
-            arr[y] = x;
-        }
-    }
-
-    private static boolean isSame(int x, int y) {
-        if (find(x) == find(y)) {
-            return true;
-        } else {
-            return false;
-        }
+    private static boolean isSame(int a, int b) {
+        return find(a) == find(b);
     }
 }
