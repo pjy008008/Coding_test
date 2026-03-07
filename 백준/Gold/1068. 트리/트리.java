@@ -4,57 +4,50 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-public class Main{
-    static ArrayList<Integer>[] tree;
-    static int delete;
-    static boolean[] isVisit;
-    static int leafCount;
+public class Main {
+    private static int n, cnt;
+    private static int remove;
+    private static ArrayList<Integer>[] graph;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int x;
-        int root=-1;
-        tree = new ArrayList[n];
+        StringTokenizer st;
+        n = Integer.parseInt(br.readLine());
+        cnt = 0;
+        int root = 0;
+        graph = new ArrayList[n];
         for (int i = 0; i < n; i++) {
-            tree[i] = new ArrayList<>();
+            graph[i] = new ArrayList<>();
         }
-        isVisit = new boolean[n];
+
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < n; i++) {
-            x = Integer.parseInt(st.nextToken());
-            if (x == -1) {
-                root=i;
-            }else{
-                tree[i].add(x);
-                tree[x].add(i);
+            int p = Integer.parseInt(st.nextToken());
+            if (p == -1) {
+                root = i;
+            } else {
+                graph[p].add(i);
             }
         }
-        st = new StringTokenizer(br.readLine());
-        delete = Integer.parseInt(st.nextToken());
+
+        remove = Integer.parseInt(br.readLine());
+
         dfs(root);
-        if (delete == root) {
-            System.out.println(0);
-        }else{
-            System.out.println(leafCount);
-        }
+        System.out.println(cnt);
     }
 
-    public static void dfs(int v) {
-        if (isVisit[v]) {
+    private static void dfs(int root) {
+        if (root == remove) {
             return;
         }
-        int nCount=0;
-        isVisit[v]=true;
-        for (int i : tree[v]) {
-            if (!isVisit[i] && i != delete) {
-                nCount++;
-                dfs(i);
-            }
+        if (graph[root].isEmpty()) {
+            cnt++;
         }
-        if (nCount == 0) {
-            leafCount++;
+        if (graph[root].size() == 1 && graph[root].get(0) == remove) {
+            cnt++;
+        }
+        for (int next : graph[root]) {
+            dfs(next);
         }
     }
-
 }
