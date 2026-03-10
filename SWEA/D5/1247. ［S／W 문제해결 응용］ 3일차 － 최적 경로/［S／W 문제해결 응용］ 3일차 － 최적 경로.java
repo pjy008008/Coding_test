@@ -2,15 +2,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Solution {
 	private static int n;
 	private static int min;
-	private static int[] selected;
-	private static ArrayList<int[]> customers;
 	private static int cx, cy, hx, hy;
+	private static ArrayList<int[]> customers;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -19,10 +17,8 @@ public class Solution {
 		int t = Integer.parseInt(br.readLine());
 		for (int i = 1; i <= t; i++) {
 			n = Integer.parseInt(br.readLine());
-			min = Integer.MAX_VALUE;
-			selected = new int[n];
 			customers = new ArrayList<>();
-
+			min = Integer.MAX_VALUE;
 			st = new StringTokenizer(br.readLine());
 			cx = Integer.parseInt(st.nextToken());
 			cy = Integer.parseInt(st.nextToken());
@@ -33,37 +29,29 @@ public class Solution {
 				int y = Integer.parseInt(st.nextToken());
 				customers.add(new int[] { x, y });
 			}
-			perm(0, 0);
+			dfs(0, 0, 0, new int[] { cx, cy });
 			sb.append("#").append(i).append(" ").append(min).append("\n");
 		}
 		System.out.println(sb);
 	}
 
-	private static void perm(int cnt, int flag) {
-		if (cnt == n) {
-			min = Math.min(min, calc(selected));
+	private static void dfs(int depth, int dis, int flag, int[] pos) {
+		if (dis > min) {
 			return;
 		}
+		if (depth == n) {
+			min = Math.min(min, dis + getDis(pos, new int[] { hx, hy }));
+		}
 		for (int i = 0; i < n; i++) {
-			if ((flag & 1 << i) != 0) {
+			if ((flag & (1 << i)) != 0) {
 				continue;
 			}
-			selected[cnt] = i;
-			perm(cnt + 1, flag | 1 << i);
+			int d = getDis(pos, customers.get(i));
+			dfs(depth + 1, dis + d, flag | 1 << i, customers.get(i));
 		}
 	}
 
-	private static int calc(int[] order) {
-		int dis = 0;
-		int[] first = customers.get(order[0]);
-		int[] last = customers.get(order[n - 1]);
-		dis += Math.abs(first[0] - cx) + Math.abs(first[1] - cy);
-		for (int i = 1; i < n; i++) {
-			int[] prev = customers.get(order[i - 1]);
-			int[] cur = customers.get(order[i]);
-			dis += Math.abs(prev[0] - cur[0]) + Math.abs(prev[1] - cur[1]);
-		}
-		dis += Math.abs(last[0] - hx) + Math.abs(last[1] - hy);
-		return dis;
+	private static int getDis(int[] pos1, int[] pos2) {
+		return Math.abs(pos1[0] - pos2[0]) + Math.abs(pos1[1] - pos2[1]);
 	}
 }
