@@ -5,24 +5,22 @@ import java.io.InputStreamReader;
 public class Main {
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder("I");
 		int n = Integer.parseInt(br.readLine());
 		int m = Integer.parseInt(br.readLine());
-		for (int i = 0; i < n; i++) {
-			sb.append("OI");
-		}
-		String findStr = sb.toString();
-		String str = br.readLine();
-
-		int idx = str.indexOf(findStr);
-
+		char[] arr = br.readLine().toCharArray();
 		int cnt = 0;
-
-		while (idx >= 0) {
-			idx = str.indexOf(findStr, idx + 1);
-			cnt++;
+		int res = 0;
+		for (int i = 1; i < m - 1; i++) {
+			if (arr[i - 1] == 'I' && arr[i] == 'O' && arr[i + 1] == 'I') {
+				cnt++;
+				if (cnt >= n) {
+					res++;
+				}
+				i++;
+			} else {
+				cnt = 0;
+			}
 		}
-
-		System.out.println(cnt);
+		System.out.println(res);
 	}
 }
