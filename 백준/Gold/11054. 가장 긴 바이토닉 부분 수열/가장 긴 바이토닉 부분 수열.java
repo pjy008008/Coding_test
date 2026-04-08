@@ -4,41 +4,53 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
+	private static int n;
+	private static int arr[];
+	private static int inc[];
+	private static int dec[];
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
-		int n = Integer.parseInt(br.readLine());
-		int[] arr = new int[n];
-		int[] increase = new int[n];
-		int[] decrease = new int[n];
+		n = Integer.parseInt(br.readLine());
+		arr = new int[n];
+		inc = new int[n];
+		dec = new int[n];
+
 		st = new StringTokenizer(br.readLine());
 		for (int i = 0; i < n; i++) {
 			arr[i] = Integer.parseInt(st.nextToken());
 		}
-
-		// LIS
-		for (int i = 0; i < n; i++) {
-			increase[i] = 1;
-			for (int j = 0; j < i; j++) {
-				if (arr[j] < arr[i]) {
-					increase[i] = Math.max(increase[i], increase[j] + 1);
-				}
-			}
-		}
-
-		// LDS
-		for (int i = n - 1; i >= 0; i--) {
-			decrease[i] = 1;
-			for (int j = n - 1; j > i; j--) {
-				if (arr[j] < arr[i]) {
-					decrease[i] = Math.max(decrease[i], decrease[j] + 1);
-				}
-			}
-		}
 		int res = 0;
 		for (int i = 0; i < n; i++) {
-			res = Math.max(res, increase[i] + decrease[i] - 1);
+			res = Math.max(res, lis(i) + lds(i) - 1);
 		}
 		System.out.println(res);
+	}
+
+	private static int lis(int idx) {
+		if (inc[idx] != 0) {
+			return inc[idx];
+		}
+		inc[idx] = 1;
+		for (int i = 0; i < idx; i++) {
+			if (arr[i] < arr[idx]) {
+				inc[idx] = Math.max(inc[idx], lis(i) + 1);
+			}
+		}
+		return inc[idx];
+	}
+
+	private static int lds(int idx) {
+		if (dec[idx] != 0) {
+			return dec[idx];
+		}
+		dec[idx] = 1;
+		for (int i = n - 1; i > idx; i--) {
+			if (arr[i] < arr[idx]) {
+				dec[idx] = Math.max(dec[idx], lds(i) + 1);
+			}
+		}
+		return dec[idx];
 	}
 }
