@@ -18,10 +18,10 @@ public class Main {
 			st = new StringTokenizer(br.readLine());
 			int n = Integer.parseInt(st.nextToken());
 			int s = Integer.parseInt(st.nextToken());
-			int gcb = gcb(n, s);
+			int gcd = gcd(n, s);
 			// 기약분수꼴로 표현
-			n /= gcb;
-			s /= gcb;
+			n /= gcd;
+			s /= gcd;
 			ans += (s * solve(n, MOD_VALUE - 2)) % MOD_VALUE;
 			ans %= MOD_VALUE;
 		}
@@ -41,11 +41,11 @@ public class Main {
 		return res;
 	}
 
-	private static int gcb(int a, int b) {
+	private static int gcd(int a, int b) {
 		int r = a % b;
 		if (r == 0) {
 			return b;
 		}
-		return gcb(b, r);
+		return gcd(b, r);
 	}
 }
