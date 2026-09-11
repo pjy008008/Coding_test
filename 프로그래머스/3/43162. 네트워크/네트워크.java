@@ -1,41 +1,31 @@
-import java.util.*;
-
 class Solution {
-    static ArrayList<Integer>[] graph;
-    static boolean[] visit;
-    static int count=0;
+    private static int N;
+    private static int[][] com;
+    private static boolean[] visited;
+    
     public int solution(int n, int[][] computers) {
-        visit = new boolean[computers.length];
-        graph = new ArrayList[computers.length];
-        for(int i=0;i<computers.length;i++){
-            graph[i] = new ArrayList<Integer>();
-        }
-        for(int i=0;i<computers.length;i++){
-            for(int j=0;j<computers[0].length;j++){
-                if(j==i){
-                    continue;
-                }
-                if(computers[i][j]==1){
-                    graph[i].add(j);
-                    graph[j].add(i);
-                }
-            }
-        }
-        for(int i=0;i<computers.length;i++){
-            if(!visit[i]){
+        N = n;
+        com = computers;
+        visited = new boolean[n];
+        
+        int ans = 0;
+        for(int i=0;i<n;i++){
+            if(!visited[i]){
+                ans++;
                 dfs(i);
-                count++;
             }
         }
-        return count;
+        return ans;
     }
-    public static void dfs(int vertex){
-        if(visit[vertex]){
+    private static void dfs(int idx){
+        if(visited[idx]){
             return;
         }
-        visit[vertex]=true;
-        for(int i:graph[vertex]){
-            dfs(i);
+        visited[idx] = true;
+        for(int i=0;i<N;i++){
+            if(com[idx][i]==1){
+                dfs(i);    
+            }
         }
     }
 }
